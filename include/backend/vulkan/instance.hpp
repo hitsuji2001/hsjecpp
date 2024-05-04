@@ -1,26 +1,37 @@
-#ifndef _HSJE_VULKAN_DEBUG_MESSENGER_HPP__
-#define _HSJE_VULKAN_DEBUG_MESSENGER_HPP__
-
-#ifdef _DEBUG
-
-#include <vector>
-#include <string>
-
-#include <vulkan/vulkan_core.h>
+#ifndef _HSJE_VULKAN_INSTANCE_HPP__
+#define _HSJE_VULKAN_INSTANCE_HPP__
 
 #include "common.hpp"
 
+#include <vector>
+
 namespace hsje {
   namespace vk {
-    class DebugMessenger {
+    class Instance {
       public:
-        void setup();
-        void cleanup(const VkInstance& instance);
-        void create(const VkInstance& instance);
-        VkDebugUtilsMessengerEXT get_debug_messenger() const;
+        Instance(
+            const std::string& app_name,
+            const std::string& instance_name,
+            const std::vector<const char*>& required_extensions
+        );
+        virtual ~Instance();
+        VkInstance get_instance() const;
+#ifdef _DEBUG
       public:
         static const std::vector<const char*> validation_layers;
+#endif
 
+      private:
+        VkApplicationInfo create_app_info(
+            const std::string& app_name,
+            const std::string& engine_name
+        ) const;
+        VkInstanceCreateInfo create_instance_info(
+            const VkApplicationInfo& app_info,
+            const std::vector<const char*>& required_extensions
+        );
+
+#ifdef _DEBUG
       private:
         bool check_validation_layers_support() const;
         VkDebugUtilsMessengerCreateInfoEXT create_debug_messenger_create_info() const;
@@ -45,13 +56,17 @@ namespace hsje {
             const VkDebugUtilsMessengerCallbackDataEXT* callback_data,
             void* user_data
         );
+
+#endif // _DEBUG
+
       private:
-        VkDebugUtilsMessengerEXT debug_messenger;
+        VkInstance instance;
+#ifdef _DEBUG
+        VkDebugUtilsMessengerEXT           debug_messenger;
         VkDebugUtilsMessengerCreateInfoEXT debug_create_info;
+#endif // _DEBUG
     };
   }
 }
 
-#endif
-
-#endif // _HSJE_VULKAN_DEBUG_MESSENGER_HPP__
+#endif // _HSJE_VULKAN_INSTANCE_HPP__

@@ -49,7 +49,7 @@ namespace hlog {
         if (severity > _severity_min) return;
         const auto& message = fmt::format(format, std::forward<T>(args)...);
         const auto& now     = std::chrono::system_clock::now();
-        const auto& index   = (size_t)severity;
+        const auto& index   = static_cast<size_t>(severity);
 
         fmt::print(fg(fmt::color::gray) | fmt::emphasis::faint, "[{}]", now);
         fmt::print(" ");
@@ -61,10 +61,10 @@ namespace hlog {
 
     private:
       static Severity              _severity_min;
-      static const char*           _severity_names[(size_t)Severity::Count];
-      static const fmt::text_style _severity_base_color[(size_t)Severity::Count];
-      static const fmt::text_style _severity_text_styles[(size_t)Severity::Count];
-      static const fmt::text_style _severity_message_styles[(size_t)Severity::Count];
+      static const std::string     _severity_names[static_cast<size_t>(Severity::Count)];
+      static const fmt::text_style _severity_base_color[static_cast<size_t>(Severity::Count)];
+      static const fmt::text_style _severity_text_styles[static_cast<size_t>(Severity::Count)];
+      static const fmt::text_style _severity_message_styles[static_cast<size_t>(Severity::Count)];
   };
 }
 

@@ -2,6 +2,7 @@
 #define _HSJE_VULKAN_COMMON_HPP__
 
 #include <string>
+#include <cstdint>
 
 #include <vulkan/vulkan_core.h>
 #include <vulkan/vk_enum_string_helper.h>

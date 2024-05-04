@@ -10,7 +10,7 @@
 namespace hsje {
   class Window {
     public:
-      Window();
+      Window() = default;
       Window(uint32_t w, uint32_t h, const std::string& title);
 
       uint32_t    get_width()  const;
@@ -22,14 +22,14 @@ namespace hsje {
       void        set_title(const std::string& title);
 
     public:
-      virtual ~Window();
-      virtual void init() = 0;
-      virtual void poll_events() = 0;
-      virtual void wait_events() = 0;
+      virtual ~Window()           = default;
+      virtual void init()         = 0;
+      virtual void poll_events()  = 0;
+      virtual void wait_events()  = 0;
       virtual bool should_close() = 0;
       virtual std::vector<const char*> get_require_instance_extensions() = 0;
 
-    private:
+    protected:
       uint32_t    width;
       uint32_t    height;
       std::string title;

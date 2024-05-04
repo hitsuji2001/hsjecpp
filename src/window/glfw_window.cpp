@@ -16,20 +16,20 @@ namespace hsje {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-    if (this->get_width() == 0) this->set_width(800);
-    if (this->get_height() == 0) this->set_height(800);
-    if (this->get_title().empty()) this->set_title("hsjengine");
+    if (this->width  == 0)   this->width  = 800;
+    if (this->height == 0)   this->height = 600;
+    if (this->title.empty()) this->title = "hsjengine";
 
     log::debug(
-        "Creating window `{}` with size `{}x{}`",
-        this->get_title(),
-        this->get_width(),
-        this->get_height()
+        "Creating window `{}` with size `{}x{}`...",
+        this->title,
+        this->width,
+        this->height
     );
     this->window = glfwCreateWindow(
-          this->get_width(),
-          this->get_height(),
-          this->get_title().c_str(),
+          this->width,
+          this->height,
+          this->title.c_str(),
           nullptr,
           nullptr
     );
@@ -38,9 +38,9 @@ namespace hsje {
     }
     log::info(
         "Successfully created window `{}` with size `{}x{}`",
-        this->get_title(),
-        this->get_width(),
-        this->get_height()
+        this->title,
+        this->width,
+        this->height
     );
   }
 

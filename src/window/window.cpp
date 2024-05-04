@@ -1,10 +1,8 @@
 #include "window/window.hpp"
 
 namespace hsje {
-  Window::Window() {}
   Window::Window(uint32_t w, uint32_t h, const std::string& t):
     width(w), height(h), title(t) {}
-  Window::~Window() {}
 
   uint32_t    Window::get_width()     const { return this->width; }
   uint32_t    Window::get_height()    const { return this->height; }

@@ -2,7 +2,7 @@
 #define _HSJE_ENGINE_HPP__
 
 #include "core/hlog.hpp"
-#include "backend/vulkan/vulkan_backend.hpp"
+#include "backend/backend.hpp"
 
 namespace hsje {
   class Engine {

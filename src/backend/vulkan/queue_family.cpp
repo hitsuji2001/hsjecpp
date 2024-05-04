@@ -1,45 +1,56 @@
 #include "backend/vulkan/queue_family.hpp"
 
+using namespace hlog;
+
 namespace hsje {
-  const uint32_t QueueFamilyIndex::_not_present = (uint32_t)-1;
-
-  QueueFamilyIndex::QueueFamilyIndex(const VkPhysicalDevice& device) {
-    uint32_t family_count = 0;
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &family_count, nullptr);
-
-    std::vector<VkQueueFamilyProperties> queue_families(family_count);
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &family_count, queue_families.data());
-
-    uint8_t min_transfer_score = (uint8_t) -1;
-    for (size_t i = 0; i < queue_families.size(); i++) {
-      uint8_t current_transfer_score = 0;
-      const auto& qf = queue_families.at(i);
-      if (qf.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-        this->graphic = i;
-        current_transfer_score++;
-      } 
-      if (qf.queueFlags & VK_QUEUE_COMPUTE_BIT) {
-        this->compute = i;
-        current_transfer_score++;
-      } 
-      if (qf.queueFlags & VK_QUEUE_TRANSFER_BIT) {
-        // Try to find dedicated transfer queue
-        if (current_transfer_score <= min_transfer_score) {
-          min_transfer_score = current_transfer_score;
-          this->transfer = i;
-        }
+  namespace vk {
+    QueueFamily::QueueFamily(
+        const VkDevice& logical_device,
+        const QueueFamilyIndex& indices
+    ) {
+      log::debug("Creating Queue Families...");
+      this->queues.reserve(static_cast<size_t>(QueueFamilyType::Size));
+      if (indices.has_graphic()) {
+        vkGetDeviceQueue(
+            logical_device,
+            indices.get_graphic(),
+            0,
+            &this->queues[static_cast<size_t>(QueueFamilyType::Graphic)]
+        );
       }
+      if (indices.has_compute()) {
+        vkGetDeviceQueue(
+            logical_device,
+            indices.get_compute(),
+            0,
+            &this->queues[static_cast<size_t>(QueueFamilyType::Compute)]
+        );
+      }
+      if (indices.has_transfer()) {
+        vkGetDeviceQueue(
+            logical_device,
+            indices.get_transfer(),
+            0,
+            &this->queues[static_cast<size_t>(QueueFamilyType::Transfer)]
+        );
+      }
+      if (indices.get_present()) {
+        vkGetDeviceQueue(
+            logical_device,
+            indices.get_present(),
+            0,
+            &this->queues[static_cast<size_t>(QueueFamilyType::Present)]
+        );
+      }
+      log::info("Successfully created all queue families!");
     }
+
+    QueueFamily::QueueFamily() {}
+    QueueFamily::~QueueFamily() {}
+
+    VkQueue QueueFamily::get_graphic()  const { return this->queues[(size_t)QueueFamilyType::Graphic]; }
+    VkQueue QueueFamily::get_compute()  const { return this->queues[(size_t)QueueFamilyType::Compute]; }
+    VkQueue QueueFamily::get_transfer() const { return this->queues[(size_t)QueueFamilyType::Transfer]; }
+    VkQueue QueueFamily::get_present()  const { return this-> queues[(size_t)QueueFamilyType::Present]; }
   }
-
-  QueueFamilyIndex::~QueueFamilyIndex() {}
-  uint32_t QueueFamilyIndex::get_graphic()  const { return this->graphic; }
-  uint32_t QueueFamilyIndex::get_compute()  const { return this->compute; }
-  uint32_t QueueFamilyIndex::get_transfer() const { return this->transfer; }
-  uint32_t QueueFamilyIndex::get_present()  const { return this->present; }
-
-  bool QueueFamilyIndex::has_graphic()  const { return this->graphic  != QueueFamilyIndex::_not_present; }
-  bool QueueFamilyIndex::has_compute()  const { return this->compute  != QueueFamilyIndex::_not_present; }
-  bool QueueFamilyIndex::has_transfer() const { return this->transfer != QueueFamilyIndex::_not_present; }
-  bool QueueFamilyIndex::has_present()  const { return this->present  != QueueFamilyIndex::_not_present; }
 }

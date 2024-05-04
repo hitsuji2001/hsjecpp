@@ -7,7 +7,7 @@ namespace hlog {
   Severity log::_severity_min = Severity::Error;
 #endif
 
-  const char* log::_severity_names[(size_t)Severity::Count] = {
+  const std::string log::_severity_names[static_cast<size_t>(Severity::Count)] = {
     "Fatal",
     "Error",
     "Warn",
@@ -16,7 +16,7 @@ namespace hlog {
     "Trace"
   };
 
-  const fmt::text_style log::_severity_base_color[(size_t)Severity::Count] = {
+  const fmt::text_style log::_severity_base_color[static_cast<size_t>(Severity::Count)] = {
     fg(fmt::color::red),
     fg(fmt::color::red),
     fg(fmt::color::golden_rod),
@@ -25,7 +25,7 @@ namespace hlog {
     fg(fmt::color::dim_gray)
   };
 
-  const fmt::text_style log::_severity_text_styles[(size_t)Severity::Count] = {
+  const fmt::text_style log::_severity_text_styles[static_cast<size_t>(Severity::Count)] = {
     log::_severity_base_color[(size_t)Severity::Fatal] | fmt::emphasis::bold | bg(fmt::color::yellow),
     log::_severity_base_color[(size_t)Severity::Error] | fmt::emphasis::bold,
     log::_severity_base_color[(size_t)Severity::Warn]  | fmt::emphasis::bold,
@@ -34,7 +34,7 @@ namespace hlog {
     log::_severity_base_color[(size_t)Severity::Trace] | fmt::emphasis::bold
   };
 
-  const fmt::text_style log::_severity_message_styles[(size_t)Severity::Count] = {
+  const fmt::text_style log::_severity_message_styles[static_cast<size_t>(Severity::Count)] = {
     log::_severity_base_color[(size_t)Severity::Fatal] | fmt::emphasis::bold,
     log::_severity_base_color[(size_t)Severity::Error] | fmt::emphasis::faint,
     log::_severity_base_color[(size_t)Severity::Warn]  | fmt::emphasis::faint,
