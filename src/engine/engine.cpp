@@ -15,12 +15,11 @@ namespace hsje {
   }
 
   void Engine::cleanup() {
-    // this->backend->cleanup(); 
   }
 
   void Engine::main_loop() { 
-    while (!this->backend->get_window()->should_close()) {
-      this->backend->get_window()->poll_events(); 
-    }
+    // while (!this->backend->get_window()->should_close()) {
+    //   this->backend->get_window()->poll_events(); 
+    // }
   }
 }

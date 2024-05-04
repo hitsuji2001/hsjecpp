@@ -5,6 +5,8 @@
 #include <fmt/color.h>
 #include <fmt/chrono.h>
 
+#include <unordered_map>
+
 namespace hlog {
   enum class Severity { Fatal, Error, Warn, Info, Debug, Trace, Count };
 
@@ -49,22 +51,21 @@ namespace hlog {
         if (severity > _severity_min) return;
         const auto& message = fmt::format(format, std::forward<T>(args)...);
         const auto& now     = std::chrono::system_clock::now();
-        const auto& index   = static_cast<size_t>(severity);
 
         fmt::print(fg(fmt::color::gray) | fmt::emphasis::faint, "[{}]", now);
         fmt::print(" ");
-        fmt::print(_severity_text_styles[index], "[{:^5}]", _severity_names[index]);
+        fmt::print(_severity_text_styles.at(severity), "[{:^5}]", _severity_names.at(severity));
         fmt::print(" ");
-        fmt::print(_severity_message_styles[index], message);
+        fmt::print(_severity_message_styles.at(severity), message);
         fmt::print("\n");
       }
 
     private:
-      static Severity              _severity_min;
-      static const std::string     _severity_names[static_cast<size_t>(Severity::Count)];
-      static const fmt::text_style _severity_base_color[static_cast<size_t>(Severity::Count)];
-      static const fmt::text_style _severity_text_styles[static_cast<size_t>(Severity::Count)];
-      static const fmt::text_style _severity_message_styles[static_cast<size_t>(Severity::Count)];
+      static Severity                                                  _severity_min;
+      static const std::unordered_map<Severity, const std::string>     _severity_names;
+      static const std::unordered_map<Severity, const fmt::text_style> _severity_base_color;
+      static const std::unordered_map<Severity, const fmt::text_style> _severity_text_styles;
+      static const std::unordered_map<Severity, const fmt::text_style> _severity_message_styles;
   };
 }
 

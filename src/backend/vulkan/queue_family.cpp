@@ -51,6 +51,6 @@ namespace hsje {
     VkQueue QueueFamily::get_graphic()  const { return this->queues[(size_t)QueueFamilyType::Graphic]; }
     VkQueue QueueFamily::get_compute()  const { return this->queues[(size_t)QueueFamilyType::Compute]; }
     VkQueue QueueFamily::get_transfer() const { return this->queues[(size_t)QueueFamilyType::Transfer]; }
-    VkQueue QueueFamily::get_present()  const { return this-> queues[(size_t)QueueFamilyType::Present]; }
+    VkQueue QueueFamily::get_present()  const { return this->queues[(size_t)QueueFamilyType::Present]; }
   }
 }

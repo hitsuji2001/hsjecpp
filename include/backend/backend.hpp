@@ -9,12 +9,8 @@ namespace hsje {
   class Backend {
     public:
       Backend() = default;
-
-      std::shared_ptr<Window> get_window() const;
-    public:
       virtual ~Backend()     = default;
-      // virtual void init()    = 0;
-      // virtual void cleanup() = 0;
+      std::shared_ptr<Window> get_window() const;
 
     protected:
       std::shared_ptr<Window> window;
