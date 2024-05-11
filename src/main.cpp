@@ -5,7 +5,7 @@
 int main(void) {
   hsje::Engine engine;
 
-  try { 
+  try {
     engine.run();
   } catch (const std::exception& e) {
     hlog::log::error(e.what());

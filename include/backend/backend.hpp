@@ -6,15 +6,15 @@
 #include "window/window.hpp"
 
 namespace hsje {
-  class Backend {
-    public:
-      Backend() = default;
-      virtual ~Backend()     = default;
-      std::shared_ptr<Window> get_window() const;
+class Backend {
+ public:
+  Backend() = default;
+  virtual ~Backend() = default;
+  std::shared_ptr<Window> get_window() const;
 
-    protected:
-      std::shared_ptr<Window> window;
-  };
+ protected:
+  std::shared_ptr<Window> window;
 };
+};  // namespace hsje
 
-#endif // _HSJE_BACKEND_HPP__
+#endif  // _HSJE_BACKEND_HPP__

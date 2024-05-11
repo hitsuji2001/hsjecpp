@@ -5,21 +5,24 @@
 #include "queue_family_index.hpp"
 
 namespace hsje {
-  namespace vk {
-    class QueueFamily {
-      public:
-        QueueFamily();
-        QueueFamily(const VkDevice& logical_device, const QueueFamilyIndex& indices);
-        virtual ~QueueFamily();
+namespace vk {
+class QueueFamily {
+ public:
+  virtual ~QueueFamily() = default;
+  QueueFamily(const std::shared_ptr<vk::Devices>& logical_device,
+              const QueueFamilyIndex& indices);
 
-        VkQueue get_graphic()  const;
-        VkQueue get_compute()  const;
-        VkQueue get_transfer() const;
-        VkQueue get_present()  const;
-      private:
-        std::vector<VkQueue> queues;
-    };
-  }
-}
+  VkQueue get_graphic() const;
+  VkQueue get_compute() const;
+  VkQueue get_transfer() const;
+  VkQueue get_present() const;
 
-#endif // _HSJE_VULKAN_QUEUE_FAMILY_HPP__
+  std::unordered_map<QueueFamilyType, VkQueue> get() const;
+
+ private:
+  std::unordered_map<QueueFamilyType, VkQueue> queues;
+};
+}  // namespace vk
+}  // namespace hsje
+
+#endif  // _HSJE_VULKAN_QUEUE_FAMILY_HPP__
